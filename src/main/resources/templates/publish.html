@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>论坛</title><!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{js/jquery-3.4.1.min.js}"></script>
+    <link rel="stylesheet" th:href="@{css/community.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
@@ -14,7 +15,7 @@
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
-<body>
+<body style="background-color: #fff2f7">
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -39,9 +40,6 @@
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li th:if="${session.user!=null}">
-                    <a th:href="@{/pubblish}">发布</a>
-                </li>
                 <li th:if="${session.user==null}"><a href="https://github.com/login/oauth/authorize?client_id=4ab39495918d702a4931&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a></li>
                 <li class="dropdown" th:if="${session.user!=null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我 <span class="caret"></span></a>
@@ -54,28 +52,37 @@
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
-    <div class="container-fluid main" style="margin: 30px">
-        <div class="row">
-            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现</h2>
-                <hr>
-                <div class="media">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object" src="..." alt="...">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">怎么快速学习springboot开发</h4>
-                        点击进入查看
-                    </div>
+</nav>
+<div class="container-fluid main" style="margin: 30px">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span class="glyphicon glyphicon-queen" aria-hidden="true"></span>发起</h2>
+            <hr>
+            <form th:action="@{/pubblish}" th:method="post">
+                <div class="form-group">
+                    <label class="sr-only" for="title">问题标题(简单扼要):</label>
+                    <input type="text" class="form-control" th:value="${title}" name="title" id="title" placeholder="问题标题是....">
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-
-            </div>
+                <div class="form-group">
+                    <label for="title">问题补充(必填，请参照右侧提示):</label>
+                    <textarea name="description" id="description" th:value="${description}" class="form-control" cols="30" rows="10">
+                    </textarea>
+                </div>
+                <div class="form-group">
+                    <label for="title">添加标签:</label>
+                    <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag" placeholder="输入标签，以,分隔">
+                </div>
+                <div class="alert alert-danger" th:text="${error}" th:if="error!=null"></div>
+                <button type="submit" class="btn btn-success btn-fabu">发布</button>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>问题发起指南</h3>
+            ●问题标题:请用简洁的语言描述您发布的问题，不超过25字
+            ●问题补充:详细补充您的问题内容，并确保问题描述清晰直观，并提供一些相关的资料：
+            ●选择标签：选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字
         </div>
     </div>
-</nav>
+</div>
 </body>
 </html>
